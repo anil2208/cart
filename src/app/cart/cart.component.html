@@ -1,0 +1,89 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="left-section">
+      <h3 class="shopping-header">SHOPPING CART ({{items?.length}})</h3>
+      <ul class="header">
+        <li class="product">PRODUCT</li>
+        <li class="qty"> QTY</li>
+        <li class="price">PRICE</li>
+        <li class="total">TOTAL</li>
+      </ul>
+      <ng-container *ngFor="let item of items">
+        <div class="card-list-container">
+          <div class="img-container">
+            <div class="product-icon">
+              <img src="{{item?.imageUrl}}">
+            </div>
+          </div>
+          <div class="flex">
+            <div class="product-container">
+              <a href="{{item?.pdpUrl}}" class="product-link">
+                <span class="block">{{item?.itemName}}</span>
+                <span class="block">Model : {{item?.modelNumber}} | Sku : {{item?.modelCode}}</span>
+              </a>
+              <span class="block" *ngIf="item?.bmFinanceDetail?.financePromoMsg"> <span class="promotional-card"><img
+                    src="{{item?.bmFinanceDetail?.financeImg}}"></span><span
+                  class="promotional-text">{{item?.bmFinanceDetail?.financePromoMsg}}</span></span>
+              <span class="block"> <span class="promotional-card"></span><span class="promotional-text">Add to
+                  wishlist</span></span>
+            </div>
+            <div class="quatity-container">
+              <ul class="input-box">
+                <li (click)="quantityHandler('-', item)"> - </li>
+                <li><input type="text" class="input-element" [(ngModel)]="item.itemQuantity" type="text" value="1" /></li>
+                <li (click)="quantityHandler('+', item)"> + </li>
+              </ul>
+            </div>
+            <div class="price">
+              <span>{{currency}}{{item?.itemAmount?.itemPrice}}</span>
+            </div>
+            <div class="total">
+              <span>{{currency}}{{item?.itemAmount?.itemPrice * item?.itemQuantity}}</span>
+            </div>
+            <div class="delete">
+              <span class="delete-box"></span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span>Choose your delivery option: </span>
+            <select [(ngModel)]="item.deliveryOption" class="select-delivery">
+              <option value="deliverOnline">Deliver Online</option>
+              <option *ngIf="item.stores.length" value="pickupFromStore">Pickup From Store</option>
+            </select>
+            <select *ngIf="item.deliveryOption === 'pickupFromStore'" [(ngModel)]="item.store" class="select-delivery">
+              <option *ngFor="let store of item.stores" value="store.storeId">{{store.storeName}} -
+                {{store.storeDistance}}</option>
+            </select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="right-section">
+       <div class="order-summary">
+         <h5 class="order-summary-header"> ORDER SUMMARY</h5>
+         <ul class="subtotal-section">
+          <li>
+            <span class="label">Subtotal</span>
+            <span class="text"><b>{{currency}}{{orderSummary?.subtotal}}</b></span>
+          </li>
+           <li>
+            <span class="label">Estimated Shipping</span>
+            <span class="text"><b>{{currency}}{{orderSummary?.shippingAmount}}</b></span>
+           </li>
+         </ul>
+         <div class="estimated-total-section">
+          <span class="label">Estimated Total</span>
+          <span class="text"><b>{{currency}}{{orderSummary?.shippingAmount}}</b></span>
+         </div>
+         <h6 class="tax-estimate">
+           <span class="star">*</span>{{orderSummary?.taxDisclaimer}}
+         </h6>
+         <div class="button-section">
+           <button class="btn">START SECURE CHECKOUT</button>
+         </div>
+         <div>
+        </div>
+       </div>
+    </div>
+  </div>
+</div>
